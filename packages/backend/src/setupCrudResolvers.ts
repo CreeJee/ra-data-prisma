@@ -1,4 +1,4 @@
-import { upperFirst, lowerFirst } from "lodash";
+import { upperFirst, lowerFirst } from "lodash-es";
 import * as Helpers from "nexus-plugin-prisma/src/typegen/helpers";
 
 import pluralize from "pluralize";

@@ -43,7 +43,6 @@
     "ra-data-graphql": "3.11.4"
   },
   "peerDependencies": {
-    "@prisma/client": "*",
     "graphql": ">=14.0.0",
     "nexus-plugin-prisma": "^0.35.0",
     "react": "*",
