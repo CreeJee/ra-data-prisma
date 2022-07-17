@@ -19,7 +19,7 @@ import {
   ResourceFragment,
   WhiteListFragment,
 } from "./types";
-import upperFirst from "lodash/upperFirst";
+import upperFirst from "lodash-es/upperFirst";
 import getFinalType from "./utils/getFinalType";
 import * as gqlTypes from "./utils/gqlTypes";
 import isList from "./utils/isList";

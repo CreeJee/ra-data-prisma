@@ -1,4 +1,4 @@
-import merge from "lodash/merge";
+import merge from "lodash-es/merge";
 import buildRaGraphqlDataProvider from "ra-data-graphql";
 import {
   DataProvider,
@@ -22,7 +22,7 @@ export const defaultOptions: Options = {
   ...defaultOurOptions,
 };
 
-const buildDataProvider = (options: Options): Promise<LegacyDataProvider> => {
+const buildDataProvider = (options: Options): Promise<DataProvider> => {
   const fullOptions = merge({}, defaultOptions, options);
   return buildRaGraphqlDataProvider(
     merge(
@@ -33,43 +33,7 @@ const buildDataProvider = (options: Options): Promise<LegacyDataProvider> => {
       },
       fullOptions,
     ),
-  ).then((graphQLDataProvider) => {
-    return (
-      fetchType: string,
-      resource: string,
-      params: { [key: string]: any },
-    ): Promise<any> => {
-      // Temporary work-around until we make use of updateMany and deleteMany mutations
-      if (fetchType === DELETE_MANY) {
-        const { ids, ...otherParams } = params;
-        return Promise.all(
-          params.ids.map((id: string) =>
-            graphQLDataProvider(DELETE, resource, {
-              id,
-              ...otherParams,
-            }),
-          ),
-        ).then((results) => {
-          return { data: results.map(({ data }: any) => data.id) };
-        });
-      }
-
-      if (fetchType === UPDATE_MANY) {
-        const { ids, ...otherParams } = params;
-        return Promise.all(
-          params.ids.map((id: string) =>
-            graphQLDataProvider(UPDATE, resource, {
-              id,
-              ...otherParams,
-            }),
-          ),
-        ).then((results) => {
-          return { data: results.map(({ data }: any) => data.id) };
-        });
-      }
-      return graphQLDataProvider(fetchType, resource, params);
-    };
-  });
+  );
 };
 
 export default buildDataProvider;

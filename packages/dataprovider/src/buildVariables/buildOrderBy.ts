@@ -1,5 +1,5 @@
 import { IntrospectionInputObjectType } from "graphql";
-import set from "lodash/set";
+import set from "lodash-es/set";
 import type { GetListParams } from ".";
 import { IntrospectionResult, Resource } from "../constants/interfaces";
 

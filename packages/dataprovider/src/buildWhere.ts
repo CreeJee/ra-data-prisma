@@ -2,10 +2,10 @@ import {
   IntrospectionInputObjectType,
   IntrospectionInputTypeRef,
 } from "graphql";
-import upperFirst from "lodash/upperFirst";
-import isObject from "lodash/isObject";
-import isArray from "lodash/isArray";
-import isEmpty from "lodash/isEmpty";
+import upperFirst from "lodash-es/upperFirst";
+import isObject from "lodash-es/isObject";
+import isArray from "lodash-es/isArray";
+import isEmpty from "lodash-es/isEmpty";
 import {
   CheckComparisonQueryResult,
   IntrospectionResult,

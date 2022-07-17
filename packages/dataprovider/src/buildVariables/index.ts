@@ -1,6 +1,6 @@
 import { IntrospectionInputObjectType } from "graphql";
-import isNil from "lodash/isNil";
-import isObject from "lodash/isObject";
+import isNil from "lodash-es/isNil";
+import isObject from "lodash-es/isObject";
 
 import {
   CREATE,

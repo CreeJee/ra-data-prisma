@@ -8,9 +8,9 @@ import {
   IntrospectionNonNullTypeRef,
   IntrospectionTypeRef,
 } from "graphql";
-import isEqual from "lodash/isEqual";
-import isNil from "lodash/isNil";
-import isObject from "lodash/isObject";
+import isEqual from "lodash-es/isEqual";
+import isNil from "lodash-es/isNil";
+import isObject from "lodash-es/isObject";
 import { IntrospectionResult } from "../constants/interfaces";
 import exhaust from "../utils/exhaust";
 import getFinalType from "../utils/getFinalType";
@@ -145,7 +145,12 @@ const buildNewInputValue = (
         (i) => i.name === ModifiersParams.delete,
       );
 
-      if (setModifier && !connectModifier && !disconnectModifier && !deleteModifier) {
+      if (
+        setModifier &&
+        !connectModifier &&
+        !disconnectModifier &&
+        !deleteModifier
+      ) {
         // if its a date, convert it to a date
         if (
           setModifier.type.kind === "SCALAR" &&
