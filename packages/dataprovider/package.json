@@ -24,28 +24,26 @@
     "build": "yarn generate:test && yarn build:cjs && yarn build:es",
     "build:cjs": "rimraf ./lib && tsc --project tsconfig.json --outDir lib --module commonjs",
     "build:es": "rimraf ./lib-es && tsc --project tsconfig.json",
-    "generate:test": "yarn generate:test:prisma && yarn generate:test:nexus",
-    "generate:test:prisma": "yarn prisma generate --schema test-data/datamodel.prisma",
-    "generate:test:nexus": "yarn ts-node --project ../../tsconfig-test.json  --transpile-only test-data/buildTestSchemaNexus.ts"
+    "generate:test": "yarn generate:test:prisma",
+    "generate:test:prisma": "yarn prisma generate --schema test-data/datamodel.prisma"
   },
   "devDependencies": {
-    "prisma": "3.2.1",
     "@prisma/client": "*",
+    "prisma": "^4.0.0",
     "rimraf": "^3.0.2",
-    "ts-node": "~8.9.1",
-    "type-graphql": "~1.1.1",
-    "typegraphql-prisma": "~0.16.2",
-    "typescript": "^4.4.3"
+    "ts-node": "^10.9.1",
+    "type-graphql": "^1.1.1",
+    "typegraphql-prisma": "^0.21.0",
+    "typescript": "^4.7.4"
   },
   "dependencies": {
-    "@prisma/client": "3.2.1",
-    "lodash": "^4.17.15",
+    "@prisma/client": "^4.0.0",
+    "lodash-es": "^4.17.21",
     "pluralize": "^8.0.0",
-    "ra-data-graphql": "3.11.4"
+    "ra-data-graphql": "4.2.0"
   },
   "peerDependencies": {
-    "graphql": ">=14.0.0",
-    "nexus-plugin-prisma": "^0.35.0",
+    "graphql": ">=16.5.0",
     "react": "*",
     "react-admin": "*"
   }
