@@ -14,7 +14,7 @@ import { Options, OurOptions } from "./types";
 import { makeIntrospectionOptions } from "./utils/makeIntrospectionOptions";
 
 export const defaultOurOptions: OurOptions = {
-  queryDialect: "nexus-prisma",
+  queryDialect: "typegraphql",
 };
 
 export const defaultOptions: Options = {
@@ -28,7 +28,7 @@ const buildDataProvider = (options: Options): Promise<DataProvider> => {
     merge(
       {},
       {
-        buildQuery: buildQueryFactory,
+        buildQuery: buildQueryFactory(options),
         introspection: makeIntrospectionOptions(fullOptions),
       },
       fullOptions,

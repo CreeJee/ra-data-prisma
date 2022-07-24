@@ -26,7 +26,7 @@ describe("buildQueryFactory", () => {
 
   it("throws an error if resource is unknown", () => {
     expect(() =>
-      buildQueryFactory(testIntrospectionNexus, defaultOurOptions)(
+      buildQueryFactory(defaultOurOptions)(testIntrospectionNexus)(
         "GET_LIST",
         "Airplane",
         {} as any,
@@ -49,7 +49,7 @@ describe("buildQueryFactory", () => {
   describe("resourceViews", () => {
     it("throws an error if a view resource point to a non-existing resource", () => {
       expect(() =>
-        buildQueryFactory(testIntrospectionNexus, {
+        buildQueryFactory({
           ...defaultOurOptions,
           resourceViews: {
             AirplaneWithManufacturer: {
@@ -64,14 +64,18 @@ describe("buildQueryFactory", () => {
               `,
             },
           },
-        })("GET_LIST", "AirplaneWithManufacturer", {} as any),
+        })(testIntrospectionNexus)(
+          "GET_LIST",
+          "AirplaneWithManufacturer",
+          {} as any,
+        ),
       ).toThrow(
         "Unknown resource Airplane. Make sure it has been declared on your server side schema. Known resources are User, UserRole",
       );
     });
 
     it("enables to whitelist fields", () => {
-      const buildQuery = buildQueryFactory(testIntrospectionNexus, {
+      const buildQuery = buildQueryFactory({
         ...defaultOurOptions,
         resourceViews: {
           UserWithTwitter: {
@@ -82,7 +86,7 @@ describe("buildQueryFactory", () => {
             },
           },
         },
-      });
+      })(testIntrospectionNexus);
 
       const { query } = buildQuery("GET_LIST", "UserWithTwitter", {
         pagination: {
@@ -124,7 +128,7 @@ describe("buildQueryFactory", () => {
     });
 
     it("enables to blacklist fields", () => {
-      const buildQuery = buildQueryFactory(testIntrospectionNexus, {
+      const buildQuery = buildQueryFactory({
         ...defaultOurOptions,
         resourceViews: {
           UserWithTwitter: {
@@ -142,7 +146,7 @@ describe("buildQueryFactory", () => {
             },
           },
         },
-      });
+      })(testIntrospectionNexus);
 
       const { query } = buildQuery("GET_LIST", "UserWithTwitter", {
         pagination: {
@@ -184,7 +188,7 @@ describe("buildQueryFactory", () => {
     });
 
     it("allows to use a single custom virtual view resources for one and many", () => {
-      const buildQuery = buildQueryFactory(testIntrospectionNexus, {
+      const buildQuery = buildQueryFactory({
         ...defaultOurOptions,
         resourceViews: {
           UserWithTwitter: {
@@ -199,7 +203,7 @@ describe("buildQueryFactory", () => {
             `,
           },
         },
-      });
+      })(testIntrospectionNexus);
 
       const { query } = buildQuery("GET_LIST", "UserWithTwitter", {
         pagination: {
@@ -235,7 +239,7 @@ describe("buildQueryFactory", () => {
 
     describe("allows to use different custom virtual view resources", () => {
       it("for get one fetch", () => {
-        const buildQuery = buildQueryFactory(testIntrospectionNexus, {
+        const buildQuery = buildQueryFactory({
           ...defaultOurOptions,
           resourceViews: {
             UserWithTwitter: {
@@ -262,7 +266,7 @@ describe("buildQueryFactory", () => {
               },
             },
           },
-        });
+        })(testIntrospectionNexus);
 
         const { query } = buildQuery("GET_ONE", "UserWithTwitter", { id: 1 });
 
@@ -278,7 +282,7 @@ describe("buildQueryFactory", () => {
         `);
       });
       it("for get list fetch", () => {
-        const buildQuery = buildQueryFactory(testIntrospectionNexus, {
+        const buildQuery = buildQueryFactory({
           ...defaultOurOptions,
           resourceViews: {
             UserWithTwitter: {
@@ -305,7 +309,7 @@ describe("buildQueryFactory", () => {
               },
             },
           },
-        });
+        })(testIntrospectionNexus);
 
         const { query } = buildQuery("GET_LIST", "UserWithTwitter", {
           pagination: {
@@ -341,7 +345,7 @@ describe("buildQueryFactory", () => {
         `);
       });
       it("for get list fetch with typegraphql count option", () => {
-        const buildQuery = buildQueryFactory(testIntrospectionTypeGraphql, {
+        const buildQuery = buildQueryFactory({
           queryDialect: "typegraphql",
           resourceViews: {
             UserWithTwitter: {
@@ -368,7 +372,7 @@ describe("buildQueryFactory", () => {
               },
             },
           },
-        });
+        })(testIntrospectionTypeGraphql);
 
         const { query } = buildQuery("GET_LIST", "UserWithTwitter", {
           pagination: {
@@ -408,7 +412,7 @@ describe("buildQueryFactory", () => {
         `);
       });
       it("for get list fetch with typegraphql count option - plural ending in 'ies'", () => {
-        const buildQuery = buildQueryFactory(testIntrospectionTypeGraphql, {
+        const buildQuery = buildQueryFactory({
           queryDialect: "typegraphql",
           resourceViews: {
             CompanyWithUser: {
@@ -435,7 +439,7 @@ describe("buildQueryFactory", () => {
               },
             },
           },
-        });
+        })(testIntrospectionTypeGraphql);
 
         const { query } = buildQuery("GET_LIST", "CompanyWithUser", {
           pagination: {
@@ -475,7 +479,7 @@ describe("buildQueryFactory", () => {
       });
 
       it("for get list fetch with typegraphql count option, without order", () => {
-        const buildQuery = buildQueryFactory(testIntrospectionTypeGraphql, {
+        const buildQuery = buildQueryFactory({
           queryDialect: "typegraphql",
           resourceViews: {
             UserWithTwitter: {
@@ -502,7 +506,7 @@ describe("buildQueryFactory", () => {
               },
             },
           },
-        });
+        })(testIntrospectionTypeGraphql);
 
         const { query } = buildQuery("GET_LIST", "UserWithTwitter", {
           pagination: {
@@ -533,7 +537,7 @@ describe("buildQueryFactory", () => {
       });
 
       it("for get many fetch", () => {
-        const buildQuery = buildQueryFactory(testIntrospectionNexus, {
+        const buildQuery = buildQueryFactory({
           ...defaultOurOptions,
           resourceViews: {
             UserWithTwitter: {
@@ -560,7 +564,7 @@ describe("buildQueryFactory", () => {
               },
             },
           },
-        });
+        })(testIntrospectionNexus);
 
         const { query } = buildQuery("GET_MANY", "UserWithTwitter", {
           ids: [1, 2],
@@ -581,7 +585,7 @@ describe("buildQueryFactory", () => {
         `);
       });
       it("for get many reference fetch", () => {
-        const buildQuery = buildQueryFactory(testIntrospectionNexus, {
+        const buildQuery = buildQueryFactory({
           ...defaultOurOptions,
           resourceViews: {
             UserWithTwitter: {
@@ -608,7 +612,7 @@ describe("buildQueryFactory", () => {
               },
             },
           },
-        });
+        })(testIntrospectionNexus);
 
         const { query } = buildQuery("GET_MANY_REFERENCE", "UserWithTwitter", {
           pagination: {
@@ -646,7 +650,7 @@ describe("buildQueryFactory", () => {
       });
       describe("supports defining only one or many", () => {
         it("uses the fragment for one, but the default for many", () => {
-          const buildQuery = buildQueryFactory(testIntrospectionNexus, {
+          const buildQuery = buildQueryFactory({
             resourceViews: {
               UserWithTwitter: {
                 resource: "User",
@@ -663,7 +667,7 @@ describe("buildQueryFactory", () => {
                 },
               },
             },
-          });
+          })(testIntrospectionNexus);
           const { query } = buildQuery("GET_LIST", "UserWithTwitter", {
             pagination: {
               page: 1,
