@@ -1,4 +1,3 @@
-import { debug } from "console";
 import {
   IntrospectionInputObjectType,
   IntrospectionInputTypeRef,
