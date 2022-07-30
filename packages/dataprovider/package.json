@@ -21,6 +21,7 @@
   },
   "scripts": {
     "test": "echo \"Error: run tests from root\" && exit 1",
+    "postinstall": "yarn build:cjs && yarn build:es",
     "build": "yarn generate:test && yarn build:cjs && yarn build:es",
     "build:cjs": "rimraf ./lib && tsc --project tsconfig.json --outDir lib --module commonjs",
     "build:es": "rimraf ./lib-es && tsc --project tsconfig.json",
