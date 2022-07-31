@@ -25,24 +25,25 @@ const sanitizeResource =
         return { ...acc, [field.name]: data[field.name] };
       }
 
-      // FIXME: We might have to handle linked types which are not resources but will have to be careful about endless circular dependencies
       const linkedResource = introspectionResults.resources.find(
         (r) => r.type.name === type.name,
       );
 
-      if (shouldSanitizeLinkedResources && linkedResource) {
+      // FIXME: We might have to handle linked types which are not resources but will have to be careful about endless circular dependencies
+      if (linkedResource && shouldSanitizeLinkedResources) {
         const linkedResourceData = data[field.name];
-
         if (Array.isArray(linkedResourceData)) {
           return {
             ...acc,
-            [field.name]: data[field.name].map((obj) => obj.id),
+            [field.name]: linkedResourceData.map((obj) => ({ id: obj.id })),
           };
         }
-
+        // IDK why is need introspectionResults should be skip property
         return {
           ...acc,
-          [field.name]: data[field.name]?.id,
+          [field.name]: {
+            id: linkedResourceData?.id,
+          },
         };
       }
 

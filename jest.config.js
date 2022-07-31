@@ -172,12 +172,15 @@ module.exports = {
   // timers: "real",
 
   // A map from regular expressions to paths to transformers
-  // transform: undefined,
-
+  transform: {
+    "^.+\\.jsx?$": "babel-jest", // Adding this line solved the issue
+    "^.+\\.tsx?$": "ts-jest",
+  },
   // An array of regexp pattern strings that are matched against all source file paths, matched files will skip transformation
-  // transformIgnorePatterns: [
-  //   "/node_modules/"
-  // ],
+  transformIgnorePatterns: [
+    // "/node_modules/",
+    "<rootDir>/node_modules/(?!lodash-es)",
+  ],
 
   // An array of regexp pattern strings that are matched against all modules before the module loader will automatically return a mock for them
   // unmockedModulePathPatterns: undefined,
