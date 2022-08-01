@@ -69,7 +69,6 @@ export const buildQueryFactory =
         aorFetchType,
         params,
       )!;
-
       if (options.queryDialect === "typegraphql") {
         Object.keys(variables).forEach((key) => {
           variables[key] = variables[key] ?? undefined;

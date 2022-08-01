@@ -3,6 +3,9 @@ import {
   DocumentNode,
   FieldNode,
   IntrospectionField,
+  IntrospectionObjectType,
+  IntrospectionType,
+  IntrospectionTypeRef,
   parse,
   SelectionNode,
   TypeKind,
@@ -213,6 +216,17 @@ const filterFields = (
   });
 };
 
+const findRealType = (type: IntrospectionTypeRef): IntrospectionObjectType => {
+  if (type.kind === "LIST") {
+    return findRealType(type.ofType);
+  }
+
+  if (type.kind === "NON_NULL") {
+    return findRealType(type.ofType);
+  }
+
+  return type as IntrospectionObjectType;
+};
 export default (
     introspectionResults: IntrospectionResult,
     options = defaultOurOptions,
@@ -237,8 +251,12 @@ export default (
     const args = buildArgs(queryType, variables);
     const countArgs = buildArgs(queryType, countVariables);
 
-    const buildRawFields = () =>
-      buildFields(introspectionResults)((resource.type as any).fields);
+    const needField = (
+      introspectionResults.types.find(
+        (v) => v.name === findRealType(resource[aorFetchType].type).name,
+      ) as any
+    ).fields;
+    const buildRawFields = () => buildFields(introspectionResults)(needField);
     const fields = fragment
       ? isDocumentNodeFragment(fragment) // its a document node
         ? buildFieldsFromFragment(fragment, resource.type.name, aorFetchType)

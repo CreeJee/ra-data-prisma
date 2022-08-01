@@ -5,6 +5,7 @@ import isObject from "lodash-es/isObject";
 import {
   CREATE,
   DELETE,
+  DELETE_MANY,
   GET_LIST,
   GET_MANY,
   GET_MANY_REFERENCE,
@@ -180,10 +181,15 @@ export const buildVariables =
           params,
         );
       }
-
       case DELETE:
         return {
           where: { id: params.id },
         };
+      case DELETE_MANY:
+        return {
+          where: { id: { in: params.ids } },
+        };
+      default:
+        return params;
     }
   };

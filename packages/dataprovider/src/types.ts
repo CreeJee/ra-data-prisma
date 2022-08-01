@@ -3,6 +3,7 @@ import { DocumentNode } from "graphql";
 import {
   CREATE,
   DELETE,
+  DELETE_MANY,
   GET_LIST,
   GET_MANY,
   GET_MANY_REFERENCE,
@@ -81,6 +82,7 @@ export type ConfigOptions = {
 export type FetchType =
   | typeof CREATE
   | typeof DELETE
+  | typeof DELETE_MANY
   | typeof GET_LIST
   | typeof GET_MANY
   | typeof GET_MANY_REFERENCE
