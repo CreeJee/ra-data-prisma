@@ -1,13 +1,6 @@
 import merge from "lodash-es/merge";
 import buildRaGraphqlDataProvider from "ra-data-graphql";
-import {
-  DataProvider,
-  DELETE,
-  DELETE_MANY,
-  LegacyDataProvider,
-  UPDATE,
-  UPDATE_MANY,
-} from "react-admin";
+import { DataProvider } from "react-admin";
 import { buildQueryFactory } from "./buildQuery";
 import { Options, OurOptions } from "./types";
 

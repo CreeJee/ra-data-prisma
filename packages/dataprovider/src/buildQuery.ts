@@ -86,7 +86,7 @@ export const buildQueryFactory =
           (resourceViewFragment && isDocumentNodeFragment(resourceViewFragment))
         ),
         queryDialect: options.queryDialect,
-      })(aorFetchType, resource);
+      })(aorFetchType, resource, params);
 
       return {
         query,

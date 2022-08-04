@@ -1,5 +1,10 @@
-import { TypeKind, IntrospectionObjectType } from "graphql";
-import { GET_LIST, GET_MANY, GET_MANY_REFERENCE } from "react-admin";
+import { TypeKind } from "graphql";
+import {
+  DELETE_MANY,
+  GET_LIST,
+  GET_MANY,
+  GET_MANY_REFERENCE,
+} from "react-admin";
 import getFinalType from "./utils/getFinalType";
 import { IntrospectionResult, Resource } from "./constants/interfaces";
 import { FetchType, QueryDialect } from "./types";
@@ -8,6 +13,7 @@ const sanitizeResource =
   (
     introspectionResults: IntrospectionResult,
     resource: Resource,
+    aorFetchType: FetchType,
     shouldSanitizeLinkedResources: boolean = true,
   ) =>
   (data: { [key: string]: any } = {}): any => {
@@ -15,10 +21,11 @@ const sanitizeResource =
       if (key.startsWith("_")) {
         return acc;
       }
-
-      const field = (resource.type as IntrospectionObjectType).fields.find(
-        (f: any) => f.name === key,
-      )!;
+      const field = (
+        introspectionResults.types.find(
+          (v) => v.name === getFinalType(resource[aorFetchType].type).name,
+        ) as any
+      ).fields.find((f: any) => f.name === key)!;
       const type = getFinalType(field.type);
 
       if (type.kind !== TypeKind.OBJECT) {
@@ -58,11 +65,12 @@ export default (
       queryDialect,
     }: { shouldSanitizeLinkedResources?: boolean; queryDialect: QueryDialect },
   ) =>
-  (aorFetchType: FetchType, resource: Resource) =>
+  (aorFetchType: FetchType, resource: Resource, params: any) =>
   (response: { [key: string]: any }) => {
     const sanitize = sanitizeResource(
       introspectionResults,
       resource,
+      aorFetchType,
       shouldSanitizeLinkedResources,
     );
     const data = response.data;
@@ -84,6 +92,12 @@ export default (
       return {
         data: response.data.items.map(sanitize),
         total: getTotal(),
+      };
+    }
+    if (aorFetchType === DELETE_MANY) {
+      return {
+        /* @TODO: we should find other payload from cache*/
+        data: params.ids.map((id) => ({ id })),
       };
     }
 

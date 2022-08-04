@@ -398,7 +398,7 @@ export const buildData = (
       return acc;
     }
 
-    const newVaue = buildNewInputValue(
+    const newValue = buildNewInputValue(
       params.data[key],
       previousFieldData,
       field.name,
@@ -408,7 +408,7 @@ export const buildData = (
 
     return {
       ...acc,
-      [key]: newVaue,
+      [key]: newValue,
     };
   }, {});
 };
