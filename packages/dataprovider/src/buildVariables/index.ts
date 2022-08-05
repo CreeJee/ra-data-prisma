@@ -110,6 +110,7 @@ const buildUpdateVariables =
         options?.customizeInputData?.[resource.type.name]?.update?.(
           data,
           params.data,
+          params.previousData,
         ) ?? data,
     };
   };

@@ -52,15 +52,21 @@ export type QueryDialect = "nexus-prisma" | "typegraphql";
 
 type Filter = Record<string, unknown>;
 
-export type CustomizeInputDataFunction = (
+export type CustomizeInputCreateFunction = (
   data: Record<string, any>,
   rawParams: Record<string, any>,
 ) => Record<string, unknown>;
 
+export type CustomizeInputUpdateFunction = (
+  data: Record<string, any>,
+  rawParams: Record<string, any>,
+  prevRawParams: Record<string, any>,
+) => Record<string, unknown>;
+
 export type CustomizeInputData = {
   [name: string]: {
-    create?: CustomizeInputDataFunction;
-    update?: CustomizeInputDataFunction;
+    create?: CustomizeInputCreateFunction;
+    update?: CustomizeInputUpdateFunction;
   };
 };
 
